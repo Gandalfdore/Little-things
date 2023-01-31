@@ -1,0 +1,53 @@
+r_x1=([221.9,218.74])  ###data from the crosses / 2 point measurment     #### all data is in Ohms
+r_x2=([45.6,45,46.6])
+
+antenna_resistances=np.array([95.6,95.51,95.55])  ### data from the antenna strcutures
+meander_resistances=np.array([508.2,506.6,547,530])  ### data from the meander strcutures
+
+pure_res1=np.array([362,362,355,371]) # in mOhm    # data from the 4 probe measurment of the 1st layer cross
+pure_res2=np.array([87,75,71,85,88,72]) # in mOhm    # data from the 4 probe measurment of the 2nd layer cross
+pure_res1=pure_res1*0.001 # making it Ohm
+pure_res2=pure_res2*0.001 # making it Ohm
+
+w1=8.3  ### width of the 1st layer lines
+w2=9.5  ### width of the 2nd layer lines
+
+# r_x1=ufloat(r_x1,1)
+# r_x2=ufloat(r_x2,1)
+r_x1=error_function(r_x1)
+r_x2=error_function(r_x2)
+r_ant=error_function(antenna_resistances)
+r_men=error_function(meander_resistances)
+pure_res1=error_function(pure_res1)
+pure_res2=error_function(pure_res2)
+w1=ufloat(w1,0.1)
+w2=ufloat(w2,0.1)
+
+
+def res_calculator(r_x1,r_x2,r_ant,r_men,pure_res1,pure_res2):
+
+    # err_mes=1
+    # err_cont=1
+    
+    r_x1_sq=pure_res1*np.pi/np.log(2)
+    r_x2_sq=pure_res2*np.pi/np.log(2)
+    
+    cont_res1=r_x1-r_x1_sq*1000/w1
+    cont_res2=r_x2-r_x2_sq*1000/w2
+    # cont_res_ave=(cont_res1+cont_res2)/2
+    
+    r_ant_sq=(r_ant - cont_res2 - (2200/w2)*r_x2_sq)/10
+    r_men_sq=(r_men - cont_res1 - 6*355*r_x1_sq/w1 -5*355*r_x2_sq/w2 -20*r_ant_sq)/10
+    
+    print ('contact resistance with 1st layer :',cont_res1)
+    print ('contact resistance with 2nd layer:',cont_res2)
+    print ('1st metal resistance :',r_x1_sq)
+    print ('2nd metal resistance :',r_x2_sq)
+    print ('single edge resistance :',r_ant_sq)
+    print ('single junction resistance :',r_men_sq)
+    print ('single junction resistance per area (ohm*um^2):',r_men_sq*(w1*w2))
+    
+    return None
+
+
+res_calculator(r_x1,r_x2,r_ant,r_men,pure_res1,pure_res2)
