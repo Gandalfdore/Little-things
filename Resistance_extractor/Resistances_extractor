@@ -23,7 +23,6 @@ pure_res2=error_function(pure_res2)
 w1=ufloat(w1,0.1)
 w2=ufloat(w2,0.1)
 
-
 def res_calculator(r_x1,r_x2,r_ant,r_men,pure_res1,pure_res2):
 
     # err_mes=1
@@ -45,7 +44,7 @@ def res_calculator(r_x1,r_x2,r_ant,r_men,pure_res1,pure_res2):
     print ('2nd metal resistance :',r_x2_sq)
     print ('single edge resistance :',r_ant_sq)
     print ('single junction resistance :',r_men_sq)
-    print ('single junction resistance per area (ohm*um^2):',r_men_sq*(w1*w2))
+    print ('single junction resistance per (10x10 um) area (ohm):',r_men_sq*(w1*w2)/100)
     
     return None
 
